@@ -112,14 +112,14 @@ const List = () => {
         {items.map((curElem) => {
           return (
             <View style={styles.eachItem}>
-              <Text style={{ color: 'black', fontSize: 15 }}>{curElem.name}</Text>
+              <Text style={{ color: 'black', fontSize: 22}}>{curElem.name}</Text>
               <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => editItems(curElem.id)}>
-                  <Image resizeMode='contain' style={{ height: 16, width: 20, right: 15, }} source={require('../assets/edit.png')}></Image>
+                  <Image resizeMode='contain' style={{ height: 22, width: 22, right: 15, }} source={require('../assets/edit.png')}></Image>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => deleteItem(curElem.id)}>
-                  <Image resizeMode='contain' style={{ height: 16, width: 20, }} source={require('../assets/trash.png')}></Image>
+                  <Image resizeMode='contain' style={{ height: 22, width: 22, }} source={require('../assets/trash.png')}></Image>
                 </TouchableOpacity>
               </View>
             </View>
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#060822',
     justifyContent: 'center',
+    
   },
 
   top: {
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
   },
   eachItem: {
     flexDirection: 'row',
-
+    borderBottomWidth:1,
 
     width: '98%',
     marginBottom: 4,

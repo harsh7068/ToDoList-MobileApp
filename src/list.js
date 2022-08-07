@@ -1,15 +1,83 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View, Image, TextInput, TouchableOpacity, Button } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import 'localstorage-polyfill';
 
+const List = () => {
+  
+  
+  
+  getLocalData = () => {
+    
+    const lists = localStorage.getItem('MyTodoList');
+    if(lists){
+      return JSON.parse(lists);
+    }
+    else{
+      return [];
+    }
+  };
+  const [inputdata, setInputData] = useState('');
+  const [items, setItems] = useState(getLocalData());
+  const [isEditItem, setIsEditItem] = useState('');
+  const [toogleButton, setToogleButton] = useState(false);
 
-export default class List extends Component {
-  render() {
+   
+    const addItem =() => {
+      if(!inputdata){
+        alert('PLease fill the data');
+      }
+      else if (inputdata && toogleButton){
+        setItems(items.map((curElem) =>{
+          if(curElem.id===isEditItem){
+            return { ...curElem, name:inputdata};
+          }
+          return curElem;
+        }));
+        setInputData([]);
+        setIsEditItem(null);
+        setToogleButton(false);
+      }
+      else{
+        const myNewInputData = {
+          id : new Date().getTime().toString(),
+          name : inputdata,
+        }
+        setItems([...items,myNewInputData]);
+        setInputData('');
+      }
+    };
+
+    const editItems = (index) => {
+      const item_todo_edited = items.find((curElem) => {
+        return curElem.id === index;
+      });
+      setInputData(item_todo_edited.name);
+      setIsEditItem(index);
+      setToogleButton(true);
+    };
+
+    const deleteItem = (index) => {
+      const updatedItems = items.filter((curElem) => {
+        return curElem.id !== index;
+      });
+      setItems(updatedItems);
+    };
+    const removeAll = () => {
+      setItems([]);
+    };
+
+    useEffect (()=>{
+      localStorage.setItem('MyTodoList',JSON.stringify(items));
+          },[items])
+    
+  
     return (
       
       <SafeAreaView style={styles.container}>
-       
+          
+          
           <View style={styles.top}>
             <Image
               resizeMode='contain'
@@ -26,20 +94,24 @@ export default class List extends Component {
               autoCapitalize='none'
               secureTextEntry={false}
               returnKeyType={'done'}
-            //value={inputdata}
-            // onChange={(event) => setInputData(event.target.value)}
+              value={inputdata}
+              onChange={(event) => setInputData(event.target.value)}
             />
-            {/* {toogleButton ? <i className="far fa-edit  add-btn" onClick={addItem}></i> : <i className="fa fa-plus add-btn" onClick={addItem}></i>}  */}
-             <TouchableOpacity>
+           
+             <TouchableOpacity onPress={addItem}>
               <Image resizeMode='contain' style={{ right: 26, height:50, width:30 }} source={require('../assets/plus.png')}></Image></TouchableOpacity>
           </View>
           
         <View style={styles.view}>
-          <View>
-            <Text>Apple</Text>
-            <Text>Grapes</Text>
-            <Text>Watermelon</Text>
-          </View>
+          {items.map((curElem)=>{
+            return (
+              <View>
+              <Text>{curElem.name}</Text>
+              
+            </View>
+            )
+          })}
+         
         </View>
         
           <View style={styles.btnview}>
@@ -51,12 +123,14 @@ export default class List extends Component {
             </Button>
           </View>
 
-       
+    
       </SafeAreaView>
      
     )
   }
-}
+
+
+export default List
 
 
 

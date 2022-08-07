@@ -99,7 +99,8 @@ const List = () => {
             />
            
              <TouchableOpacity onPress={addItem}>
-              <Image resizeMode='contain' style={{ right: 26, height:50, width:30 }} source={require('../assets/plus.png')}></Image></TouchableOpacity>
+              {toogleButton ? <Image resizeMode='contain' style={{ right: 26, height:50, width:30 }} source={require('../assets/plus.png')}></Image> : <Image resizeMode='contain' style={{ right: 26, height:50, width:30 }} source={require('../assets/plus.png')}></Image>}
+              </TouchableOpacity>
           </View>
           
         <View style={styles.view}>
